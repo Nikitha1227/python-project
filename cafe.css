@@ -1,0 +1,155 @@
+
+/* General Styling */
+
+body {
+    background-color: #F5EBDD;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
+
+
+/* Navigation Bar */
+
+header {
+    background-color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h2 {
+    color: #3B2419;
+}
+
+nav a {
+    text-decoration: none;
+    color: #3B2419;
+    margin: 10px;
+}
+
+nav a:hover {
+    color: #C58B54;
+}
+
+
+/* Hero Section */
+
+.hero {
+    text-align: center;
+    padding: 40px;
+}
+
+.hero h1 {
+    color: #3B2419;
+    font-size: 35px;
+}
+
+.hero p {
+    font-size: 18px;
+}
+
+.hero button {
+    background-color: #3B2419;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.hero button:hover {
+    background-color: #C58B54;
+}
+
+.hero img {
+    width: 300px;
+    height: 200px;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px;
+}
+
+
+/* Coffee Menu */
+
+.menu {
+    text-align: center;
+    padding: 30px;
+}
+
+.coffee {
+    background-color: white;
+    padding: 15px;
+    margin: 15px auto;
+    width: 250px;
+    border-radius: 10px;
+}
+
+.coffee h3 {
+    color: #3B2419;
+}
+
+
+/* About Section */
+
+.about {
+    text-align: center;
+    padding: 30px;
+}
+
+.about p {
+    font-size: 17px;
+}
+
+
+/* Footer */
+
+footer {
+    background-color: #3B2419;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Contact Form */
+
+.contact {
+    text-align: center;
+    padding: 40px;
+}
+
+.contact h1 {
+    color: #3B2419;
+}
+
+.contact form {
+    width: 300px;
+    margin: auto;
+}
+
+.contact input,
+.contact textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.contact textarea {
+    height: 100px;
+}
+
+.contact button {
+    background-color: #3B2419;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.contact button:hover {
+    background-color: #C58B54;
+}
