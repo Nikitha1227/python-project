@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}TechCart Store{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'shop/styles.css' %}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="{% url 'shop:product_list' %}" class="brand">
+        <span class="brand-icon">🛍️</span> TechCart
+      </a>
+
+      <form method="get" action="{% url 'shop:product_list' %}" class="nav-search">
+        <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search keyboards, hubs, accessories...">
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="nav-actions">
+        <a href="{% url 'shop:cart_detail' %}" class="cart-btn">
+          🛒 Cart <span class="badge">{{ cart_count }}</span>
+        </a>
+
+        <!-- 1. Sign In button or logged-in username pill -->
+        {% if user.is_authenticated %}
+          <span class="user-pill">Hi, {{ user.username }}</span>
+        {% else %}
+          <a href="{% url 'shop:login' %}" class="nav-login-btn">Sign In</a>
+        {% endif %}
+
+        <div class="menu-wrapper">
+          <button type="button" class="hamburger-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="dropdown-menu" id="navDropdown">
+            <a href="{% url 'shop:order_history' %}" class="menu-item">📜 Order History</a>
+            <a href="{% url 'shop:receipts_list' %}" class="menu-item">🧾 Receipts</a>
+            <a href="{% url 'shop:account_details' %}" class="menu-item">👤 Account Details</a>
+
+            <!-- 2. Auth actions inside the three-line dropdown -->
+            <div class="menu-divider"></div>
+            {% if user.is_authenticated %}
+              <form method="post" action="{% url 'shop:logout' %}" class="menu-logout-form">
+                {% csrf_token %}
+                <button type="submit" class="menu-item menu-logout-btn">🚪 Sign Out</button>
+              </form>
+            {% else %}
+              <a href="{% url 'shop:login' %}" class="menu-item">🔐 Sign In</a>
+              <a href="{% url 'shop:register' %}" class="menu-item">✨ Create Account</a>
+            {% endif %}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    {% if messages %}
+      <div class="toast-stack">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 TechCart Store • Built with Django</p>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const navDropdown = document.getElementById("navDropdown");
+
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = navDropdown.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", isOpen);
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!navDropdown.contains(e.target) && !menuToggle.contains(e.target)) {
+        navDropdown.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  </script>
+</body>
+</html>

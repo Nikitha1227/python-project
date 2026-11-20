@@ -1,0 +1,45 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Order #{{ order.id }} Receipt | TechCart{% endblock %}
+
+{% block content %}
+  <div class="card" style="max-width: 720px; margin: 0 auto; padding: 2rem;">
+    <span style="color: #059669; font-weight: 700; font-size: 0.85rem;">ORDER CONFIRMED</span>
+    <h1 style="margin: 0.25rem 0 0.5rem;">Order #{{ order.id }}</h1>
+    <p style="color: #64748b; margin-top: 0;">
+      Thank you, <strong>{{ order.full_name }}</strong> • Shipping to: {{ order.address }}
+    </p>
+
+    <table style="margin: 1.25rem 0;">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items.all %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ item.unit_price }}</td>
+            <td>₹{{ item.line_total }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if order.discount_amount > 0 %}
+      <p style="margin: 0.25rem 0; color: #059669; font-weight: 600;">
+        Promo ({{ order.coupon_code }}): -₹{{ order.discount_amount }}
+      </p>
+    {% endif %}
+    <h2 style="margin: 0.5rem 0 1.5rem;">Total Paid: ₹{{ order.total_paid }}</h2>
+
+    <a href="{% url 'shop:product_list' %}">
+      <button type="button">Continue Shopping</button>
+    </a>
+  </div>
+{% endblock %}

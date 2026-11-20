@@ -1,0 +1,76 @@
+﻿{% extends "shop/base.html" %}
+
+{% block title %}Account Details | TechCart{% endblock %}
+
+{% block content %}
+  <div class="toolbar">
+    <h1>Account Details</h1>
+    <a href="{% url 'shop:product_list' %}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+      ← Continue Shopping
+    </a>
+  </div>
+
+  <div class="card" style="padding: 1.75rem; max-width: 720px;">
+    <h2 style="margin-top: 0;">Login &amp; Profile Details</h2>
+
+    {% if user.is_authenticated %}
+      <p><strong>Username:</strong> {{ user.username }}</p>
+      <p><strong>Full Name:</strong> {{ user.get_full_name|default:"Not set" }}</p>
+      <p><strong>Email:</strong> {{ user.email|default:"Not set" }}</p>
+      <p><strong>Joined:</strong> {{ user.date_joined|date:"M d, Y" }}</p>
+      <p>
+        <strong>Account Type:</strong>
+        {% if user.is_staff %}Staff / Admin{% else %}Customer{% endif %}
+      </p>
+    {% else %}
+      <p><strong>Username:</strong> Guest Shopper (Not signed in)</p>
+      <p style="color: #64748b;">
+        <a href="{% url 'shop:login' %}" style="color: #2563eb; font-weight: 600;">Sign in</a>
+        to view and edit your account details.
+      </p>
+    {% endif %}
+
+    <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1.25rem 0;">
+
+    <h3 style="margin-top: 0;">Order Summary</h3>
+    <p><strong>Total Orders Placed:</strong> {{ total_orders }}</p>
+    <p><strong>Total Amount Spent:</strong> ₹{{ total_spent }}</p>
+    {% if last_order %}
+      <p>
+        <strong>Last Shipping Address:</strong> {{ last_order.full_name }} — {{ last_order.address }}
+      </p>
+    {% endif %}
+
+    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+      <a href="{% url 'shop:order_history' %}"><button type="button">Order History</button></a>
+      <a href="{% url 'shop:receipts_list' %}"><button type="button">View Receipts</button></a>
+      {% if user.is_staff %}
+        <a href="/admin/"><button type="button">Django Admin</button></a>
+      {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+      <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
+      <h3 style="margin-top: 0;">Update Profile Info</h3>
+      <form method="post" style="display: flex; flex-direction: column; gap: 0.85rem; max-width: 440px;">
+        {% csrf_token %}
+        <div>
+          <label for="id_first_name" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">First Name</label>
+          <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}"
+                 style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+        </div>
+        <div>
+          <label for="id_last_name" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">Last Name</label>
+          <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}"
+                 style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+        </div>
+        <div>
+          <label for="id_email" style="display: block; font-weight: 600; margin-bottom: 0.25rem;">Email Address</label>
+          <input type="email" id="id_email" name="email" value="{{ user.email }}"
+                 style="width: 100%; padding: 0.6rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+        </div>
+        <button type="submit" style="align-self: flex-start; padding: 0.65rem 1.25rem;">Save Changes</button>
+      </form>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Receipts | TechCart{% endblock %}
+
+{% block content %}
+  <div class="toolbar">
+    <h1>Receipts</h1>
+    <a href="{% url 'shop:order_history' %}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+      Order History →
+    </a>
+  </div>
+
+  {% if orders %}
+    <table>
+      <thead>
+        <tr>
+          <th>Receipt #</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Discount</th>
+          <th>Total Paid</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td><strong>#{{ order.id }}</strong></td>
+            <td>{{ order.created_at|date:"M d, Y" }}</td>
+            <td>{{ order.full_name }}</td>
+            <td>
+              {% if order.discount_amount > 0 %}
+                -₹{{ order.discount_amount }} ({{ order.coupon_code }})
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td><strong>₹{{ order.total_paid }}</strong></td>
+            <td>
+              <a href="{% url 'shop:order_receipt' order.id %}" style="color: #2563eb; font-weight: 600; text-decoration: none;">
+                Open Receipt
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="card" style="padding: 2.5rem; text-align: center;">
+      <h2>No receipts available</h2>
+      <p style="color: #64748b;">Receipts are generated automatically after each purchase.</p>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Sign In | TechCart{% endblock %}
+
+{% block content %}
+  <div class="auth-wrapper">
+    <div class="card auth-card">
+      <div class="auth-header">
+        <span class="hero-tag">MEMBER ACCESS</span>
+        <h1>Sign in to TechCart</h1>
+        <p>Access your order history, download receipts, and speed through checkout.</p>
+      </div>
+
+      {% if form.errors %}
+        <div class="alert alert-warning">
+          Invalid username or password. Please check your credentials and try again.
+        </div>
+      {% endif %}
+
+      <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        <div class="form-field">
+          <label for="id_username">Username</label>
+          <input type="text" name="username" id="id_username" autofocus required placeholder="Enter your username">
+        </div>
+
+        <div class="form-field">
+          <label for="id_password">Password</label>
+          <input type="password" name="password" id="id_password" required placeholder="••••••••">
+        </div>
+
+        <button type="submit" class="auth-submit-btn">Sign In</button>
+      </form>
+
+      <div class="auth-perks">
+        <div>⚡ Fast checkout</div>
+        <div>🧾 Saved receipts</div>
+        <div>🎟️ Promo offers</div>
+      </div>
+
+      <p class="auth-switch">
+        New to TechCart? <a href="{% url 'shop:register' %}">Create an account</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

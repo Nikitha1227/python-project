@@ -1,0 +1,77 @@
+{% extends "shop/base.html" %}
+
+{% block title %}TechCart | Desk & Tech Gear{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <div>
+      <span class="hero-tag">NEW ARRIVALS</span>
+      <h1>Upgrade Your Workspace</h1>
+      <p>Curated mechanical keyboards, ergonomic stands, and desk essentials.</p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <p class="result-count">Showing <strong>{{ products|length }}</strong> products</p>
+
+    <form method="get" class="sort-form">
+      {% if query %}
+        <input type="hidden" name="q" value="{{ query }}">
+      {% endif %}
+      <label for="sort">Sort by:</label>
+      <select name="sort" id="sort" onchange="this.form.submit()">
+        <option value="" {% if not sort %}selected{% endif %}>Featured</option>
+        <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>Price: Low to High</option>
+        <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>Price: High to Low</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="product-grid">
+    {% for product in products %}
+      <article class="card">
+        <div class="card-media">
+          <a href="{% url 'shop:product_detail' product.id %}">
+            {% if product.image_url %}
+              <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            {% else %}
+              <div class="img-placeholder">📦</div>
+            {% endif %}
+          </a>
+
+          {% if product.stock <= 3 %}
+            <span class="stock-pill low">Only {{ product.stock }} left</span>
+          {% else %}
+            <span class="stock-pill">In Stock ({{ product.stock }})</span>
+          {% endif %}
+        </div>
+
+        <div class="card-body">
+          <h2>
+            <a href="{% url 'shop:product_detail' product.id %}" style="color: inherit; text-decoration: none;">
+              {{ product.name }}
+            </a>
+          </h2>
+          <p class="desc">{{ product.description }}</p>
+
+          <div class="card-footer">
+            <div class="price-row">
+              <span class="price">₹{{ product.price }}</span>
+              <span class="shipping-tag">Free delivery</span>
+            </div>
+
+            <form method="post" action="{% url 'shop:cart_add' product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="add-btn">+ Add to Cart</button>
+            </form>
+          </div>
+        </div>
+      </article>
+    {% empty %}
+      <div class="empty-state">
+        <h3>No matching products found</h3>
+        <p><a href="{% url 'shop:product_list' %}">Clear search filters</a></p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

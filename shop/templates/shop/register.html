@@ -1,0 +1,51 @@
+{% extends "shop/base.html" %}
+
+{% block title %}Create Account | TechCart{% endblock %}
+
+{% block content %}
+  <div class="auth-wrapper">
+    <div class="card auth-card">
+      <div class="auth-header">
+        <span class="hero-tag">NEW SHOPPER</span>
+        <h1>Create your account</h1>
+        <p>Join TechCart to track orders, keep receipts, and shop faster.</p>
+      </div>
+
+      {% if form.errors %}
+        <div class="alert alert-warning">
+          {{ form.non_field_errors }}
+          {% for field in form %}
+            {% for error in field.errors %}
+              <div><strong>{{ field.label }}:</strong> {{ error }}</div>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="auth-form">
+        {% csrf_token %}
+
+        <div class="form-field">
+          <label for="id_username">Username</label>
+          <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" autofocus required placeholder="Choose a username">
+        </div>
+
+        <div class="form-field">
+          <label for="id_password1">Password</label>
+          <input type="password" name="password1" id="id_password1" required placeholder="Create a strong password">
+        </div>
+
+        <div class="form-field">
+          <label for="id_password2">Confirm Password</label>
+          <input type="password" name="password2" id="id_password2" required placeholder="Re-enter your password">
+        </div>
+
+        <button type="submit" class="auth-submit-btn">Create Account</button>
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="{% url 'shop:login' %}">Sign in</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}
